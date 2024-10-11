@@ -1,0 +1,20 @@
+{
+  "authenticationMethod": "route",
+  "routes": [
+    {
+      "source": "^/srv/(.*)$",      
+      "destination": "srv",
+      "authenticationType": "xsuaa",
+      "csrfProtection": false,
+      "target": "$1",
+      "httpMethods": ["GET", "POST", "DELETE"]
+    },
+    {
+      "source": "^(.*)$",
+      "target":"$1",
+      "service":"html5-apps-repo-rt",
+      "authenticationType": "xsuaa"
+    }
+  ],
+  "welcomeFile": "/comxtendhrweb"
+}

@@ -1,0 +1,46 @@
+<mvc:View controllerName="com.xtendhr.web.controller.Main"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns="sap.m"
+    xmlns:t="sap.ui.table"
+    xmlns:core="sap.ui.core">
+    
+    <Page id="page" title="Company Shirts S0024700475">
+        <content>
+        <Table id="idList" inset="false" items ="{path: 'odata>/d/results'}">
+			<headerToolbar>
+				<Toolbar id="idToolbar">
+					<ToolbarSpacer id="idToolbarSpacer"/>
+					<Button id="idAddButton"  icon="sap-icon://add" iconFirst="false" tooltip="{i18n>addTooltip}" press="onAddNewEntry"/>
+				</Toolbar>
+			</headerToolbar>
+			<columns>
+				<Column id="externalCode">
+					<Text id="idTxt1" text="{i18n>externalCode}" />
+				</Column>
+                <Column id="shirtColor">
+					<Text id="idTxt2" text="{i18n>shirtColor}" />
+				</Column>
+				<Column id="shirtSize">
+					<Text id="idTxt3" text="{i18n>shirtSize}" />
+				</Column>
+				<Column id="emp">
+					<Text id="idTxt5" text="{i18n>emp}" />
+				</Column>
+				<Column id="idAction" width="5%">
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem id="idColumnListItem">
+					<cells>
+						<Text id="idTxt6" text="{odata>externalCode}"/>
+                        <Text id="idTxt7" text="{odata>cust_ShirtColor}"/>
+						<Text id="idTxt8" text="{odata>cust_ShirtSize}" />
+                        <Text id="idTxt10" text="{odata>cust_Employee}" />
+						<core:Icon id="idDetailsButton" src="sap-icon://detail-view" tooltip="{i18n>editTooltip}" press="onDetails"/>
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
+	  </content>
+    </Page>
+</mvc:View>

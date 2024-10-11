@@ -1,0 +1,182 @@
+_schema-version: "3.1"
+ID: cfdemo475
+version: 0.0.1
+modules:
+
+
+- name: cfdemo475-service
+  type: nodejs
+  path: srv
+  requires:
+  - name: cfdemo475-xsuaa
+  - name: cfdemo475-destination-service
+  provides:
+  - name: srv-api
+    properties:
+      url: ${default-url}
+  build-parameters:
+    ignore:
+    - default-*.json
+    - .env
+    - '*node_modules*'
+    - package-lock.json 
+
+
+- name: cfdemo475-approuter
+  type: approuter.nodejs
+  path: app
+  provides:
+    - name: app_api
+      properties:
+        url: ${default-url}
+        application: ${app-name}
+  properties:
+    TENANT_HOST_PATTERN: '^(.*)-${space}-cfdemo475-approuter.${default-domain}'
+  requires:
+  - name: srv-api
+    group: destinations
+    properties:
+      name: srv
+      url: ~{url}
+      forwardAuthToken: true
+      timeout: 55000
+  - name: cfdemo475-xsuaa
+  - name: cfdemo475-destination-service
+  - name: cfdemo475-repo-rt
+  - name: cfdemo475-registry
+    group: destinations
+    properties:
+      forwardAuthToken: false
+      name: ui5
+      url: https://ui5.sap.com
+  parameters:
+    disk-quota: 512M
+    keep-existing-routes: true
+    memory: 256M
+  build-parameters:
+    ignore:
+    - default-*.json
+    - .env
+    - '*node_modules*'
+    - package-lock.json
+
+
+- name: cfdemo475-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: cfdemo475-repo-host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - comxtendhrweb.zip
+      name: comxtendhrweb
+      target-path: resources/
+- name: comxtendhrweb
+  type: html5
+  path: web
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+
+
+resources:
+- name: cfdemo475-xsuaa
+  type: org.cloudfoundry.managed-service
+  parameters: 
+    service: xsuaa
+    service-plan: application  
+    config:
+      xsappname: cfdemo475-${org}-${space} 
+    path: ./xs-security.json
+  properties:
+    XSAPPNAME: cfdemo475-${org}-${space} 
+
+
+- name: cfdemo475-registry
+  type: org.cloudfoundry.managed-service
+  requires:
+    - name: cfdemo475-xsuaa
+    - name: app_api
+  parameters:
+    service: saas-registry
+    service-plan: application
+    service-name: cfdemo475-registry
+    config:
+      appName: cfdemo475-${org}-${space}
+      displayName: 'CF Demo MTA'
+      description: 'Demo Application'
+      category: 'XTendHR SaaS'
+      appUrls: 
+        onSubscription: ~{app_api/url}/callback/v1.0/tenants/{tenantId}
+        getDependencies: ~{app_api/url}/callback/v1.0/dependencies
+      xsappname: cfdemo475-${org}-${space}
+
+
+- name: cfdemo475-repo-rt
+  type: org.cloudfoundry.managed-service
+  parameters:    
+    service-plan: app-runtime 
+    service: html5-apps-repo      
+
+
+- name: cfdemo475-repo-host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: cfdemo475-html5-srv
+    service-plan: app-host
+
+
+- name: cfdemo475-destination-service
+  type: org.cloudfoundry.managed-service
+  requires:
+    - name: srv-api
+  parameters:
+    config:
+      HTML5Runtime_enabled: false
+      init_data:
+        instance:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          existing_destinations_policy: update
+        subaccount:
+          existing_destinations_policy: update
+          destinations:
+            - Name: srv-api
+              Description: middleware service
+              Authentication: NoAuthentication
+              ProxyType: Internet
+              Type: HTTP
+              URL: ~{srv-api/url}
+              HTML5.DynamicDestination: true
+              HTML5.ForwardAuthToken: true
+            - Name: cfdemo475-cfapi
+              Description: CF Cloud Controller API
+              URL: ${controller-url}
+              Type: HTTP
+              ProxyType: Internet
+              Authentication: OAuth2Password
+              tokenServiceURL: ${authorization-url}/oauth/token
+              clientId: cf
+              clientSecret:
+              User: <SetValueInCockpit>
+              Password: <SetValueInCockpit>         
+      version: 1.0.0
+    service: destination
+    service-name: cfdemo475-destination-service
+    service-plan: lite
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true

@@ -1,0 +1,45 @@
+<mvc:View controllerName="com.xtendhr.web.controller.Details" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns="sap.m"
+	xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core" xmlns:t="sap.ui.table" xmlns:semantic="sap.m.semantic">
+	<!--Page id="id_page" title="{i18n>title}" navButtonPress="onCancel" showNavButton="true">
+		<content>
+			<Panel id="idpnl1" headerText="Company Shirts Details" width="auto" class="sapUiResponsiveMargin">
+				<content-->
+					<semantic:FullscreenPage id="idDetailsPage" navButtonPress="onCancel" showNavButton="true" title="Company Shirts Details">
+						<semantic:content>
+							<VBox id="idbpx1" class="sapUiSmallMargin" fitContainer="true">
+								<f:SimpleForm id="objDetails" editable="true" layout="ResponsiveGridLayout" labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12"
+									adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1"
+									singleContainerFullSize="false">
+									<f:content>
+										<Label id="idlab1" text="External Code"/>
+										<Input id="id_externalCode" value="{shirt>/externalCode}" editable="false" enabled="false"/>
+										<!---->
+										<Label id="idlab2" text="Color"/>
+										<Input id="id_cust_ShirtColor" value="{shirt>/cust_ShirtColor}" editable="true"/>
+										<!---->
+										<Label id="idlab3" text="Size"/>
+										<Input id="id_cust_ShirtSize" value="{shirt>/cust_ShirtSize}" editable="true" />
+										<!---->
+										<Label id="idlab4" text="Employee"/>
+										<Input id="id_cust_Employee" value="{shirt>/cust_Employee}" editable="true"/>
+										<!---->
+                                        <Label id="idlab5" text="Created By"/>
+										<Input id="id_createdBy" value="{shirt>/createdBy}" editable="true"/>
+										<!---->
+                                        <Label id="idlab6" text="Last Modified By"/>
+										<Input id="id_lastModifiedBy" value="{shirt>/lastModifiedBy}" editable="true"/>
+									</f:content>
+								</f:SimpleForm>
+							</VBox>
+						</semantic:content>
+						<semantic:customFooterContent>
+						    <Button id="idDelete" press="onDelete" icon="sap-icon://delete" text="Delete Record" tooltip="Delete"/>	
+							<Button id="idSave" press="onSave" icon="sap-icon://save" text="Save Changes" tooltip="Save"/>	
+							<Button id="idCancel" press="onCancel" icon="sap-icon://cancel" text="Cancel" tooltip="Cancel"/>	
+						</semantic:customFooterContent>
+					</semantic:FullscreenPage>
+				<!--/content>
+			</Panel>
+		</content>
+	</Page-->
+</mvc:View>
