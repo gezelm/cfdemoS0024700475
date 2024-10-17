@@ -300,12 +300,12 @@ app.listen(port, function(){console.log("Basic NodeJS listening on port " + port
 add requires
 ```yaml
 modules:
-- name: cfdemoS0020227452-service
+- name: cfdemoS0024700475-service
 .......
 
   requires:
   ....
-- name: cfdemoS0020227452-destination-service
+- name: cfdemoS0024700475-destination-service
 
 ``` 
 
@@ -326,7 +326,7 @@ go to resources
     service: html5-apps-repo     
 
  ...
-- name: cfdemoS0020227452-repo-host
+- name: cfdemoS0024700475-repo-host
 ```
 ### HTML authenticated
 Add new file (xs-security.json) and add path in mta.yaml
@@ -399,11 +399,11 @@ cfdemo-xsuaa final
 
  ```yaml
 resources:
-- name: cfdemoS0020227452-xsuaa
+- name: cfdemoS0024700475-xsuaa
   type: org.cloudfoundry.managed-service
   parameters:
     config:
-      xsappname: cfdemoS0020227452-${org}-${space}      
+      xsappname: cfdemoS0024700475-${org}-${space}      
     path: ./xs-security.json
     service: xsuaa
     service-plan: application
@@ -418,16 +418,16 @@ define new properties XSAPPNAME in __cfdemo-xsuaa__
 
 ```yaml
 resources:
-- name: cfdemoS0020227452-xsuaa
+- name: cfdemoS0024700475-xsuaa
   type: org.cloudfoundry.managed-service
   parameters:
     config:
-      xsappname: cfdemoS0020227452-${org}-${space}      
+      xsappname: cfdemoS0024700475-${org}-${space}      
     path: ./xs-security.json
     service: xsuaa
     service-plan: application
   properties:
-    XSAPPNAME: cfdemoS0020227452-${org}-${space}  
+    XSAPPNAME: cfdemoS0024700475-${org}-${space}  
 
 ```
 ### App Router
@@ -511,7 +511,7 @@ For calls to destination services, we need to define the destination.
 __server.js__
 
 ```js
-const services = xsenv.getServices({uaa: "cfdemoS0020227452-xsuaa"},{dest:{label: 'destination'}}); //xsuaa service & Destination
+const services = xsenv.getServices({uaa: "cfdemoS0024700475-xsuaa"},{dest:{label: 'destination'}}); //xsuaa service & Destination
 ```
 
 #### Destination reuse service
